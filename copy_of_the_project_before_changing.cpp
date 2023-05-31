@@ -1,0 +1,688 @@
+////this code about the project that I was working on it initanlly but the minimax function is not wokring this is like a temp file
+//#include <iostream>
+//#include <string.h>
+//#include <stdio.h>
+//#include<fstream>
+//
+//#pragma warning(disable : 4996) //_CRT_SECURE_NO_WARNINGS
+//#define EMPTY_PLACE 0
+//#define PLAYER1 1
+//#define PLAYER2 2
+//#define TIE -1
+//#define FULL false
+//#define MAX_SCORE +10
+//#define MIN_SCORE -10
+//using namespace std;
+//
+//std::ofstream out_file{ "../results.txt" };
+//bool file = false;
+//
+//enum commands
+//{
+//	GEN_ALL_POS_MOV,
+//	GEN_ALL_POS_MOV_CUT_IF_GAME_OVER,
+//	SOLVE_GAME_STATE,
+//	ERROR
+//};
+//
+//int dictionary(char const command[]) {
+//	if (strcmp(command, "GEN_ALL_POS_MOV") == 0)
+//		return GEN_ALL_POS_MOV;
+//	else if (strcmp(command, "GEN_ALL_POS_MOV_CUT_IF_GAME_OVER") == 0)
+//		return GEN_ALL_POS_MOV_CUT_IF_GAME_OVER;
+//	else if (strcmp(command, "SOLVE_GAME_STATE") == 0)
+//		return SOLVE_GAME_STATE;
+//	else
+//		return ERROR;
+//}
+//
+//struct Move {
+//	int row, col;   //m = row  n = colunm
+//	Move() {
+//		row = -1;	// this is out range value if it was not change it will give an run time error
+//		col = -1;
+//	}
+//
+//	void reset() {
+//		row = -1;
+//		col = -1;
+//	}
+//};
+//
+//
+//
+//class Board
+//{
+//public:
+//	Board();
+//	~Board();
+//	void set_N_M_K_playerActive();
+//	void movesGenerator(bool const cutUsage);
+//	void creatBoard(int const n, int const m);
+//	void initialize();
+//	void printPossibleMoves();
+//	int incodePositionToNumber(int const n, int const m);
+//	void printBoard(int const n, int const m);
+//	void updateBoardCUT(int const n, int const m, int& stateGame, int numberOfUpdates);
+//	void printBoard(int** Board);
+//	int nonActivePlayer();
+//	int switchPlayers(int const playerTurn);
+//	bool isMovesLeft(int** Board);
+//	int evaluate(int winner, int playerTurn);
+//	void makeMove(int row, int col, int player, int** Board);
+//	int checkWinner(int** board);
+//	bool checkingDifferenceBetween_K_row(int currentcolumn);
+//	Move findBestMove(Move& bestMove, bool isMax, int playerTurn);
+//	int checkGameOver();
+//	void solveGame();
+//	int minimax(int** board, int depth, bool isMax, int playerTurn);
+//	int minimax_count;		//this is for the count when we use minimax so we know how many we got places left and this is will be a copy of count at teh begening,  specuialy when we use recurions
+//	int** board;			//[row][column]
+//	int** copyBoard;	    //used to for the cut game over, it will be a copy about board
+//private:
+//	int n;   //n = colunm  
+//	int m;	 //m = row
+//	int k;	 //k = victory condition
+//	int activePlayer;
+//	int count = 0;
+//	int* p1_positions = nullptr;
+//	int* p2_positions = nullptr;
+//	int winner = TIE;
+//};
+//
+//
+//void Board::set_N_M_K_playerActive()
+//{
+//	cin >> m >> n >> k >> activePlayer;
+//}
+//
+//void Board::creatBoard(int const n, int const m)
+//{
+//	board = new int* [m];
+//	for (int i = 0; i < m; i++)
+//		board[i] = new int[n];
+//}
+//
+//void Board::initialize()
+//{
+//	for (int i = 0; i < m; i++)
+//		for (int j = 0; j < n; j++) {
+//			cin >> board[i][j];
+//			if (board[i][j] == EMPTY_PLACE)
+//				count++;
+//		}
+//}
+//
+//int Board::nonActivePlayer()
+//{
+//	if (activePlayer == PLAYER2)
+//		return PLAYER2;
+//	else
+//		return PLAYER1;
+//}
+//
+//int Board::switchPlayers(int const playerTurn)
+//{
+//	if (playerTurn == PLAYER1)
+//		return PLAYER2;
+//	else
+//		return PLAYER1;
+//}
+//
+//int Board::evaluate(int winner, int playerTurn)
+//{
+//
+//	if (winner == playerTurn)
+//		return MAX_SCORE;
+//	else if (winner != playerTurn)
+//		return MIN_SCORE;
+//	else if (winner == TIE)
+//		return 0;
+//}
+//
+//int Board::incodePositionToNumber(int const i, int const j)
+//{
+//	return i * m + j;
+//}
+//
+//bool Board::checkingDifferenceBetween_K_row(int currentColumn)
+//{
+//	if ((k - currentColumn))
+//	{
+//
+//	}
+//	return false;
+//}
+//
+//bool Board::isMovesLeft(int** Board)
+//{
+//	for (int i = 0; i < m; i++)
+//		for (int j = 0; j < n; j++)
+//			if (Board[i][j] == EMPTY_PLACE)
+//				return true;
+//	return false;
+//}
+//
+//void Board::makeMove(int row, int col, int player, int** Board)
+//{
+//	Board[row][col] = player;
+//	count--;
+//}
+//
+//void Board::printBoard(int const n, int const m)
+//{
+//	for (int i = 0; i < this->m; i++)
+//	{
+//		for (int j = 0; j < this->n; j++)
+//		{
+//			if (n == i && j == m)
+//				cout << activePlayer << " ";
+//			else
+//				cout << board[i][j] << " ";
+//		}
+//		cout << endl;
+//	}
+//}
+//
+//void Board::printBoard(int** Board)
+//{
+//	for (int i = 0; i < m; i++)
+//	{
+//		for (int j = 0; j < n; j++)
+//		{
+//			cout << Board[i][j] << " ";
+//		}
+//		cout << endl;
+//	}
+//}
+//
+//void Board::printPossibleMoves()
+//{
+//	cout << count << endl;
+//
+//	for (int i = 0; i < m && count > 0; i++)
+//		for (int j = 0; j < n && count > 0; j++)
+//			if (board[i][j] == EMPTY_PLACE)
+//			{
+//				printBoard(i, j);
+//				count--;
+//			}
+//}
+//
+//int Board::checkWinner(int** board)
+//{
+//	//int checkWinner(char gameBoard[ROWS][COLS], int player)     // I've commented the last (and the hardest, for me anyway)
+//														// check, which checks for backwards diagonal runs below >>>
+//	int row = 0, col = 0, i = 0;
+//	int currentPlayer = 0;
+//	int  tempCol = -1;    //will be runtime error if this iniztaled value haven't been changed
+//	int  tempRow = -1;    //will be runtime error if this iniztaled value haven't been changed
+//	bool flage = true;
+//
+//	for (row = 0; row < m; row++)                       // This first for loop checks every row
+//	{
+//		for (col = 0; col < (n - (k - 1)); col++)           // And all columns until N away from the end
+//		{
+//			if (board[row][col] != EMPTY_PLACE) {
+//				currentPlayer = board[row][col];
+//				tempCol = col;
+//				while (board[row][tempCol] == currentPlayer)      // For consecutive rows of the current player's mark
+//				{
+//					tempCol++;
+//					i++;
+//					if (i == k)
+//					{
+//						return currentPlayer;
+//					}
+//				}
+//			}
+//			else
+//				flage = false;
+//			i = 0;
+//		}
+//	}
+//
+//	for (col = 0; col < n; col++)                       // This one checks for columns of consecutive marks
+//	{
+//		for (row = 0; row < (m - (k - 1)); row++)
+//		{
+//			if (board[row][col] != EMPTY_PLACE)
+//			{
+//				currentPlayer = board[row][col];
+//				tempRow = row;
+//				while (board[tempRow][col] == currentPlayer)
+//				{
+//					tempRow++;
+//					i++;
+//					if (i == k)
+//					{
+//						return currentPlayer;
+//					}
+//				}
+//			}
+//			else
+//				flage = false;
+//			i = 0;
+//		}
+//	}
+//
+//	for (col = 0; col < (n - (k - 1)); col++)             // This one checks for "forwards" diagonal runs
+//	{
+//		for (row = 0; row < (m - (k - 1)); row++)
+//		{
+//			//tempCol = col;
+//			if (board[row][col] != EMPTY_PLACE) {
+//				currentPlayer = board[row][col];
+//				tempCol = col;
+//				tempRow = row;
+//				while (board[tempRow][tempCol] == currentPlayer)
+//				{
+//					tempRow++;
+//					tempCol++;
+//					i++;
+//					if (i == k)
+//					{
+//						//cout << "first" << endl;
+//						return currentPlayer;
+//					}
+//				}
+//			}
+//			else
+//				flage = false;
+//			i = 0;
+//		}
+//	}
+//	// Finally, the backwards diagonals:
+//	for (col = n - 1; col > (0 + (k - 2)); col--)           // Start from the last column and go until k columns from the first
+//	{                                                   // The math seems strange here but the numbers work out when you trace them
+//		for (row = 0; row < (m - (k - 1)); row++)       // Start from the first row and go until N rows from the last
+//		{
+//			if (board[row][col] != EMPTY_PLACE) {
+//				currentPlayer = board[row][col];
+//				tempCol = col;
+//				tempRow = row;
+//				while (board[tempRow][tempCol] == currentPlayer)  // If the current player's character is there
+//				{
+//					tempRow++;                                  // Go down a row			
+//					tempCol--;
+//					i++;                                    // The i variable tracks how many consecutive marks have been found
+//					if (i == k)                             // Once i == k
+//					{
+//						//cout << "back" << endl;
+//						return currentPlayer;                      // Return the current player number to the
+//					}											   // winnner variable in the playGame function
+//				}
+//			}
+//			else {
+//				flage = false;
+//			}
+//			// If it breaks out of the while loop, there weren't N consecutive marks
+//			i = 0;                                      // So make i = 0 again
+//		}                                               // And go back into the for loop, incrementing the row to check from
+//	}
+//	return TIE;                                         // If we got to here, no winner has been detected,
+//												 // so we pop back up into the playGame function
+//}
+//
+//void Board::updateBoardCUT(int const n, int const m, int& cutState, int numberOfUpdates)
+//{
+//	copyBoard = new int* [this->m];
+//	for (int i = 0; i < this->m; i++)
+//		copyBoard[i] = new int[this->n];
+//
+//	for (int i = 0; i < this->m; i++)
+//	{
+//		for (int j = 0; j < this->n; j++)
+//		{
+//			if (n == i && j == m) {
+//				copyBoard[i][j] = activePlayer;
+//			}
+//			else
+//				copyBoard[i][j] = board[i][j];
+//		}
+//	}
+//
+//	cutState = checkWinner(copyBoard);
+//	if (cutState != TIE) {
+//		numberOfUpdates++;
+//		cout << numberOfUpdates << endl;
+//		printBoard(copyBoard);
+//	}
+//
+//	for (int i = 0; i < m; i++)
+//	{
+//		delete[] copyBoard[i];
+//	}
+//	delete[] copyBoard;
+//}
+//
+//int Board::checkGameOver()
+//{
+//	int numberOfUpdates = 0;
+//	int cutState = 0;
+//	for (int i = 0; i < m && count > 0; i++) {
+//		for (int j = 0; j < n && count >0; j++) {
+//			if (board[i][j] == EMPTY_PLACE)
+//			{
+//				updateBoardCUT(i, j, cutState, numberOfUpdates);
+//				if (cutState != TIE) {
+//					count = 0;
+//					return cutState;   //somebody is winning
+//				}
+//			}
+//		}
+//	}
+//	return cutState;    //it is a draw
+//}
+//
+////class G{ 
+////public:
+////	bool State;
+////	bool Evaluate(Player activePlayer);
+////	int GeneratePossibleMoves(Player activePlayer);
+////}; G gameState;
+////
+////class Player{
+////public:
+////	bool first;
+////	int GetOponent();
+////}; ;
+////Player first;
+////#define GameOver 0
+//
+////int maximum(int best, int bests) {
+////}
+////
+////int minimum(int best,int bests) {
+////}
+//
+////int Minmax(G gameState, Player activePlayer){
+////
+////	int score = gameState.Evaluate(activePlayer);
+////	if (gameState.State == GameOver){
+////		return score;
+////	}
+////
+////	int active=1;
+////	int allPossibleMoves = gameState.GeneratePossibleMoves(activePlayer);
+////	int best;
+////
+////	if (activeplayer == theFirstPlayer) {
+////		for (int possibleMove = 0; possibleMove < allPossibleMoves; possibleMove++)
+////			 best = maximum(best, Minmax(possibleMove, activePlayer.GetOponent()));
+////		return best;
+////	}
+////	else{
+////		for (int possibleMove = 0; possibleMove < allPossibleMoves; possibleMove++)
+////				best = minimum(best, Minmax(possibleMove, activePlayer.GetOponent()));
+////		return best;
+////	}
+////}
+//
+//int Board::minimax(int** board, int depth, bool isMax, int playerTurn)
+//{
+//	int score = evaluate(checkWinner(this->board), switchPlayers(playerTurn));
+//
+//	// If Maximizer has won the game return his/her
+//	// evaluated score
+//	if (score == MAX_SCORE)
+//		return score;
+//
+//	// If Minimizer has won the game return his/her
+//	// evaluated score
+//	if (score == MIN_SCORE)
+//		return score;
+//
+//	// If there are no more moves and no winner then
+//	// it is a tie
+//	//if (minimax_count == FULL)			/////////URGEEEEEEEEEENNNNNNNNNT 
+//	//	return FULL;
+//
+//	if (isMovesLeft(this->board) == FULL)
+//		return 0;
+//
+//	// If this maximizer's move
+//	if (isMax)
+//	{
+//		int best = -1000;
+//
+//		// Traverse all cells
+//		for (int i = 0; i < m; i++)
+//		{
+//			for (int j = 0; j < n; j++)
+//			{
+//				// Check if cell is empty
+//				if (board[i][j] == EMPTY_PLACE)
+//				{
+//					// Make the move
+//					board[i][j] = playerTurn;
+//
+//					// Call minimax recursively and choose
+//					// the maximum value
+//					best = max(best,
+//						minimax(board, depth + 1, !isMax, playerTurn));
+//
+//					// Undo the move
+//					board[i][j] = EMPTY_PLACE;
+//				}
+//			}
+//		}
+//		return best;
+//	}
+//
+//	// If this minimizer's move
+//	else
+//	{
+//		int best = 1000;
+//
+//		// Traverse all cells
+//		for (int i = 0; i < m; i++)
+//		{
+//			for (int j = 0; j < n; j++)
+//			{
+//				// Check if cell is empty
+//				if (board[i][j] == EMPTY_PLACE)
+//				{
+//					// Make the move
+//					board[i][j] = switchPlayers(playerTurn);
+//
+//					// Call minimax recursively and choose
+//					// the minimum value
+//					best = min(best,
+//						minimax(board, depth + 1, !isMax, playerTurn));
+//
+//					// Undo the move
+//					board[i][j] = EMPTY_PLACE;
+//				}
+//			}
+//		}
+//		return best;
+//	}
+//}
+//
+//Move Board::findBestMove(Move& bestMove, bool isMax, int playerTurn)
+//{
+//	int bestVal = -1000;
+//
+//	// Traverse all cells, evaluate minimax function for
+//	// all empty cells. And return the cell with optimal
+//	// value.
+//	for (int i = 0; i < m; i++)
+//	{
+//		for (int j = 0; j < n; j++)
+//		{
+//			// Check if cell is empty
+//			if (board[i][j] == EMPTY_PLACE)
+//			{
+//				// Make the move
+//				board[i][j] = playerTurn;
+//
+//				// compute evaluation function for this
+//				// move.
+//				int moveVal = minimax(this->board, 0, isMax, playerTurn);
+//
+//				// Undo the move
+//				board[i][j] = EMPTY_PLACE;
+//
+//				// If the value of the current move is
+//				// more than the best value, then update
+//				// best/
+//				if (moveVal > bestVal)
+//				{
+//					bestMove.row = i;
+//					bestMove.col = j;
+//					bestVal = moveVal;
+//				}
+//			}
+//		}
+//	}
+//	cout << bestVal << endl;
+//	return bestMove;
+//}
+//
+//void Board::solveGame()
+//{
+//	int gameState = 0;
+//	set_N_M_K_playerActive();
+//	creatBoard(n, m);
+//	initialize();
+//	Move bestMove;
+//	int playerTurn = activePlayer;
+//	while (true) {
+//
+//		winner = checkWinner(this->board);
+//		switch (winner)
+//		{
+//		case PLAYER1:
+//		{
+//			if (file == false)
+//				cout << "FIRST_PLAYER_WINS" << endl;
+//			else
+//				out_file << "FIRST_PLAYER_WINS" << endl;
+//			return;
+//			break;
+//		}
+//		case PLAYER2:
+//		{
+//			if (file == false)
+//				cout << "SECOND_PLAYER_WINS" << endl;
+//			else
+//				out_file << "SECOND_PLAYER_WINS" << endl;
+//			return;
+//			break;
+//		}
+//		case TIE:
+//		{
+//			if (isMovesLeft(this->board) == FULL)
+//			{
+//				if (file == false)
+//					cout << "BOTH_PLAYERS_TIE" << endl;
+//				else
+//					out_file << "BOTH_PLAYERS_TIE" << endl;
+//				return;
+//			}
+//
+//			if (playerTurn == PLAYER1)
+//			{
+//				findBestMove(bestMove, false, playerTurn);
+//				makeMove(bestMove.row, bestMove.col, PLAYER1, this->board);
+//			}
+//			else {		//the seocnd player	
+//				findBestMove(bestMove, false, playerTurn);
+//				makeMove(bestMove.row, bestMove.col, PLAYER2, this->board);
+//			}
+//
+//			playerTurn = switchPlayers(playerTurn);
+//
+//			bestMove.reset();
+//			cout << "*********" << endl;
+//			printBoard(this->board);
+//			break;
+//		}
+//		default:
+//			cout << "ERROR in winner" << endl;
+//			break;
+//		}
+//	}
+//}
+//
+//void Board::movesGenerator(bool const cutUsage)
+//{
+//	int gameState = 0;
+//	int cutState = TIE;
+//
+//	set_N_M_K_playerActive();
+//	creatBoard(n, m);
+//	initialize();
+//	gameState = checkWinner(this->board);
+//
+//	if (gameState != TIE) {			//if somebody is already winning
+//		cout << "0" << endl;
+//		count = 0;
+//	}
+//	else if (gameState == TIE && count == 0)
+//		cout << "0" << endl;
+//	else if (cutUsage)
+//		cutState = checkGameOver();
+//
+//	if (cutState == TIE && gameState == TIE && count > 0)
+//		printPossibleMoves();
+//
+//
+//}
+//
+//Board::Board()
+//{
+//	p1_positions = new int[10];
+//	p2_positions = new int[10];
+//}
+//
+//Board::~Board()
+//{
+//	delete[] p1_positions;
+//	delete[] p2_positions;
+//
+//	for (int i = 0; i < m; i++)
+//	{
+//		delete[] board[i];
+//	}
+//	delete[] board;
+//}
+//
+//int main() {
+//
+//	Board board;
+//	char command[100];
+//	while (true)
+//	{
+//		scanf("%s", command);
+//		if (feof(stdin) != 0)
+//		{
+//			break;
+//		}
+//
+//		switch (dictionary(command))
+//		{
+//		case GEN_ALL_POS_MOV:
+//		{
+//			board.movesGenerator(false);
+//			break;
+//		}
+//		case GEN_ALL_POS_MOV_CUT_IF_GAME_OVER:
+//		{
+//			board.movesGenerator(true);
+//			break;
+//		}
+//		case SOLVE_GAME_STATE:
+//		{
+//			board.solveGame();
+//			break;
+//		}
+//		case ERROR:
+//		default:
+//			cout << "undefined in the input";
+//			break;
+//		}
+//	}
+//	return 0;
+//}
