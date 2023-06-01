@@ -153,12 +153,18 @@ $ g++ main.cpp -o tic_tac_toe
 $ ./tic_tac_toe
 ```
 Make sure to adjust the file paths if you plan to save the output to a file instead of printing it to the console.
+
 ## Results
 
-The results can be shown to ways either in the consel or can be wrritting to a file.
-And what it determis that, is the global varible file. 
+The results can be displayed in two ways: either in the console or by writing them to a file. This is determined by the `file` global variable, which indicates whether the results should be written to a file.
+
+To write the results to a file, set `file` to `true` and provide the desired file path using the `out_file` variable:
+
 ```c++
 std::ofstream out_file{ "../results.txt" };
-bool file = false;
+bool file = true;
 ```
-If file is false then it will ouput the results in the consel if is it's true it will be written to the file with the path out_file
+
+By default, if `file` is set to `false`, the results will be outputted to the console.
+
+Feel free to modify the `file` variable and provide a different file path if you want to write the results to a specific file.
